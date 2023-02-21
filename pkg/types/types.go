@@ -27,6 +27,7 @@ import (
 type NetConf struct {
 	types.NetConf
 	Master string `json:"master"`
+	Pkey   string `json:"pkey,omitempty"`
 }
 
 // Manager provides interface invoke ipoib nic related operations

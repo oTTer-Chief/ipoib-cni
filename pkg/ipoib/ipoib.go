@@ -18,6 +18,7 @@ package ipoib
 
 import (
 	"fmt"
+	"strconv"
 
 	current "github.com/containernetworking/cni/pkg/types/100"
 	"github.com/containernetworking/plugins/pkg/ip"
@@ -107,6 +108,14 @@ func (im *ipoibManager) CreateIpoibLink(conf *types.NetConf, ifName string, netn
 	// partition key is 15 bits
 	pkey := ipoibLnk.Pkey & 0x7fff
 	mode := ipoibLnk.Mode
+
+	if conf.Pkey != "" {
+		tmpPkey, err := strconv.ParseUint(conf.Pkey, 0, 15)
+		if err != nil {
+			return nil, err
+		}
+		pkey = uint16(tmpPkey)
+	}
 
 	tmpName, err := ip.RandomVethName()
 	if err != nil {

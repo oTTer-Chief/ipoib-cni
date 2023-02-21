@@ -19,6 +19,7 @@ package config
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 
 	"github.com/Mellanox/ipoib-cni/pkg/types"
 )
@@ -31,6 +32,15 @@ func LoadConf(bytes []byte) (*types.NetConf, string, error) {
 	}
 	if n.Master == "" {
 		return nil, "", fmt.Errorf("host master interface is missing")
+	}
+	if n.Pkey != "" {
+		tmpPkey, err := strconv.ParseUint(n.Pkey, 0, 15)
+		if err != nil {
+			return nil, "", fmt.Errorf("invalid Pkey: %w", err)
+		}
+		if tmpPkey < 1 || tmpPkey > 32767 {
+			return nil, "", fmt.Errorf("invalid Pkey %s (must be between 0x0001 and 0x7fff inclusive)", n.Pkey)
+		}
 	}
 	return n, n.CNIVersion, nil
 }
