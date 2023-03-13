@@ -12,7 +12,6 @@ var _ = Describe("Config", func() {
         "name": "mynet",
         "type": "ipoib",
         "master": "enp2s0f0",
-        "vf": 0,
         "ipam": {
             "type": "host-local",
             "subnet": "10.55.206.0/26",
@@ -29,7 +28,6 @@ var _ = Describe("Config", func() {
 			conf := []byte(`{
         "name": "mynet",
         "type": "ipoib",
-        "vf": 0,
         "ipam": {
             "type": "host-local",
             "subnet": "10.55.206.0/26",
