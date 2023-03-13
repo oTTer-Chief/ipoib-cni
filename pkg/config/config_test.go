@@ -12,6 +12,7 @@ var _ = Describe("Config", func() {
         "name": "mynet",
         "type": "ipoib",
         "master": "enp2s0f0",
+        "pkey": "0x7fff",
         "ipam": {
             "type": "host-local",
             "subnet": "10.55.206.0/26",
@@ -28,6 +29,24 @@ var _ = Describe("Config", func() {
 			conf := []byte(`{
         "name": "mynet",
         "type": "ipoib",
+        "ipam": {
+            "type": "host-local",
+            "subnet": "10.55.206.0/26",
+            "routes": [
+                { "dst": "0.0.0.0/0" }
+            ],
+            "gateway": "10.55.206.1"
+        }
+                        }`)
+			_, _, err := LoadConf(conf)
+			Expect(err).To(HaveOccurred())
+		})
+		It("Assuming incorrect config file - invalid pkey", func() {
+			conf := []byte(`{
+        "name": "mynet",
+        "type": "ipoib",
+        "master": "enp2s0f0",
+        "pkey": "0xffff",
         "ipam": {
             "type": "host-local",
             "subnet": "10.55.206.0/26",
